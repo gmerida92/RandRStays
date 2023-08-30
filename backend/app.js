@@ -9,6 +9,8 @@ const cookieParser = require('cookie-parser');
 const { environment } = require('./config');
 const isProduction = environment === 'production';
 
+const routes = require('./routes');
+
 const app = express();
 
 app.use(morgan('dev'));
@@ -41,13 +43,19 @@ app.use(
 );
 
 // backend/app.js
-const routes = require('./routes');
-const { sequelize } = require('./db/models');
+app.use(routes); // Connect all the routes
 
-app.use(routes); // connect all the routes
+module.exports = app;
 
-// backend/app.js
-// Catch unhandled requests and forward to error handler.
-app.use((req, res, next) => {
-    const err = new Error("The requested resource couldn't be found.");
-});
+
+// // backend/app.js
+// const routes = require('./routes');
+// const { sequelize } = require('./db/models');
+
+// app.use(routes); // connect all the routes
+
+// // backend/app.js
+// // Catch unhandled requests and forward to error handler.
+// app.use((req, res, next) => {
+//     const err = new Error("The requested resource couldn't be found.");
+// });
